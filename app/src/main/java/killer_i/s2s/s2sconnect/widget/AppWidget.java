@@ -55,7 +55,7 @@ public class AppWidget  extends AppWidgetProvider {
         updateWidgets(c);
         String[] data = getDeviceAndCommand(c);
         BluetoothManager blm = new BluetoothManager(null, null, new Logger(c));
-        boolean res = blm.sendMessage(data[2], data[1]);
+        boolean res = blm.sendSerialCommand(data[2], data[1]);
         if (res) {
             currentStatus = CurrentStatus.SUCCESS;
             hintText = "Operation success";

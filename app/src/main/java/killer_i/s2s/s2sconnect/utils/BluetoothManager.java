@@ -45,6 +45,34 @@ public class BluetoothManager {
         return true;
     }
 
+    public boolean sendSerialCommand(String address, String command) {
+        OutputStream outputStream;
+        BluetoothSocket socket = getSocket(address);
+        try {
+            outputStream = socket.getOutputStream();
+            outputStream.write(hexStringToByteArray(command));
+            socket.close();
+        } catch (Exception e) {
+            logger.error(e.getClass().getName(), e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    private byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len/2];
+
+        try {
+            for (int i = 0; i < len; i += 2) {
+                data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            logger.error("Wrong message", "Command entered is in wrong format");
+        }
+        return data;
+    }
+
     private BluetoothSocket getSocket(String address) {
         BluetoothDevice device;
         BluetoothSocket socket = null;
