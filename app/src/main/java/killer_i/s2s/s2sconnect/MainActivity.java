@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            );
 //            blm.deviceConnection.start();
             BluetoothManager blm = new BluetoothManager(null, null, new Logger(getApplicationContext()));
-            boolean res = blm.sendMessage(
+            boolean res = blm.sendSerialCommand(
                     spService.getString(getResources().getString(R.string.selected_device_id)),
                     spService.getString(getResources().getString(R.string.command_to_send))
             );

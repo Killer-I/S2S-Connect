@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.Set;
+import java.util.UUID;
 
 import killer_i.s2s.s2sconnect.ActionsMainActivity;
 
@@ -37,6 +38,7 @@ public class BluetoothManager {
         try {
             outputStream = socket.getOutputStream();
             outputStream.write(message.getBytes());
+            Thread.sleep(1000);
             socket.close();
         } catch (Exception e) {
             logger.error(e.getClass().getName(), e.getMessage());
@@ -51,6 +53,7 @@ public class BluetoothManager {
         try {
             outputStream = socket.getOutputStream();
             outputStream.write(hexStringToByteArray(command));
+            Thread.sleep(1000);
             socket.close();
         } catch (Exception e) {
             logger.error(e.getClass().getName(), e.getMessage());
@@ -76,10 +79,11 @@ public class BluetoothManager {
     private BluetoothSocket getSocket(String address) {
         BluetoothDevice device;
         BluetoothSocket socket = null;
+        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
         try {
             device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
             ParcelUuid[] uuids = device.getUuids();
-            socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
+            socket = device.createRfcommSocketToServiceRecord(uuid);
             socket.connect();
             return socket;
         } catch (Exception e) {
